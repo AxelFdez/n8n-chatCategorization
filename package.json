@@ -1,0 +1,24 @@
+{
+  "name": "n8n-chatcategorization",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "docker-compose up -d",
+    "stop": "docker-compose down",
+    "restart": "docker-compose restart",
+    "logs": "docker-compose logs -f n8n",
+    "status": "docker-compose ps"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AxelFdez/n8n-chatCategorization.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AxelFdez/n8n-chatCategorization/issues"
+  },
+  "homepage": "https://github.com/AxelFdez/n8n-chatCategorization#readme"
+}
