@@ -28,10 +28,22 @@ http://localhost:5678
 docker-compose down
 ```
 
+## Export des workflows
+
+Pour versionner vos workflows sans exposer les credentials sensibles :
+
+```bash
+npm run export
+```
+
+Ce script exporte tous vos workflows depuis la base de données n8n vers le dossier `workflows/` au format JSON. Les workflows peuvent ensuite être versionnés avec Git.
+
+**Important** : Les credentials (API keys, tokens, passwords) ne sont PAS inclus dans l'export pour des raisons de sécurité. Vous devrez les reconfigurer manuellement après l'import.
+
 ## Volumes
 
-- `n8n_data` : Données persistantes de n8n
-- `./workflows` : Dossier local pour stocker les workflows
+- `n8n_data/` : Données persistantes de n8n (non versionné pour sécurité)
+- `workflows/` : Workflows exportés au format JSON (versionnés)
 
 ## Configuration
 

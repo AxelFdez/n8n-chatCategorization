@@ -18,7 +18,6 @@ services:
       - GENERIC_TIMEZONE=Europe/Paris
     volumes:
       - ./n8n_data:/home/node/.n8n
-      - ./workflows:/home/node/.n8n/workflows
     networks:
       - n8n-network
 

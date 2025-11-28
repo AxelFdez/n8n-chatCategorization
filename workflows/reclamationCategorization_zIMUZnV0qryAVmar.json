@@ -1,0 +1,728 @@
+{
+  "id": "zIMUZnV0qryAVmar",
+  "name": "reclamationCategorization",
+  "nodes": [
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "claude-haiku-4-5-20251001",
+          "mode": "list",
+          "cachedResultName": "Claude Haiku 4.5"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        528,
+        208
+      ],
+      "id": "957712af-1762-411c-90b3-e3c1faf6413b",
+      "name": "Anthropic Chat Model",
+      "credentials": {
+        "anthropicApi": {
+          "id": "Gz2YggoGSOHJjLeG",
+          "name": "Anthropic account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -32,
+        16
+      ],
+      "id": "7add134a-e51e-4788-ab7d-5ce6346f3e57",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"subject\": \"Problème de rechargement de carte Pass\",\n  \"from\": {\n    \"name\": \"Jean Dupont\",\n    \"address\": \"jean.dupont@gmail.com\"\n  },\n  \"body\": \"Bonjour,\\n\\nJe vous contacte car depuis ce matin, je n'arrive plus à recharger mon pass mensuel sur les bornes automatiques de la station Garibaldi.\\n\\nJ'ai essayé sur 3 bornes différentes, et à chaque fois j'obtiens le message 'Erreur de lecture de carte'.\\n\\nMa carte fonctionnait parfaitement jusqu'à hier.\\n\\nPouvez-vous m'aider ?\\n\\nCordialement,\\nJean Dupont\",\n  \"date\": \"2025-11-20T14:30:00.000Z\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        240,
+        16
+      ],
+      "id": "c9122c9a-8ef0-4075-87be-797727f43296",
+      "name": "Réclamation billetique"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ff30e641-54d2-461b-b76f-8925c6ffd558",
+              "name": "subject",
+              "value": "={{ $json.subject }}",
+              "type": "string"
+            },
+            {
+              "id": "13166398-5e06-4a68-8599-f6188038e5f7",
+              "name": "from",
+              "value": "={{ $json.from }}",
+              "type": "object"
+            },
+            {
+              "id": "01a2d440-0d2e-40ad-886c-dc70a90e32c6",
+              "name": "body",
+              "value": "={{ $json.body }}",
+              "type": "string"
+            },
+            {
+              "id": "1157dd58-bb98-4e16-a3b8-ee9256d23517",
+              "name": "date",
+              "value": "={{ $json.date }}",
+              "type": "string"
+            },
+            {
+              "id": "c80449b2-c536-472f-8b09-8bf8e028690d",
+              "name": "Classification",
+              "value": "billetique",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        976,
+        0
+      ],
+      "id": "990594fe-d3e0-47d3-b62f-712461474d8e",
+      "name": "Ajout billetique"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ff30e641-54d2-461b-b76f-8925c6ffd558",
+              "name": "subject",
+              "value": "={{ $json.subject }}",
+              "type": "string"
+            },
+            {
+              "id": "13166398-5e06-4a68-8599-f6188038e5f7",
+              "name": "from",
+              "value": "={{ $json.from }}",
+              "type": "object"
+            },
+            {
+              "id": "01a2d440-0d2e-40ad-886c-dc70a90e32c6",
+              "name": "body",
+              "value": "={{ $json.body }}",
+              "type": "string"
+            },
+            {
+              "id": "1157dd58-bb98-4e16-a3b8-ee9256d23517",
+              "name": "date",
+              "value": "={{ $json.date }}",
+              "type": "string"
+            },
+            {
+              "id": "c80449b2-c536-472f-8b09-8bf8e028690d",
+              "name": "Classification",
+              "value": "commercial",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        976,
+        -128
+      ],
+      "id": "99512c24-a8c4-45f5-8e05-2dd4319725bd",
+      "name": "Ajout commercial"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ff30e641-54d2-461b-b76f-8925c6ffd558",
+              "name": "subject",
+              "value": "={{ $json.subject }}",
+              "type": "string"
+            },
+            {
+              "id": "13166398-5e06-4a68-8599-f6188038e5f7",
+              "name": "from",
+              "value": "={{ $json.from }}",
+              "type": "object"
+            },
+            {
+              "id": "01a2d440-0d2e-40ad-886c-dc70a90e32c6",
+              "name": "body",
+              "value": "={{ $json.body }}",
+              "type": "string"
+            },
+            {
+              "id": "1157dd58-bb98-4e16-a3b8-ee9256d23517",
+              "name": "date",
+              "value": "={{ $json.date }}",
+              "type": "string"
+            },
+            {
+              "id": "c80449b2-c536-472f-8b09-8bf8e028690d",
+              "name": "Classification",
+              "value": "exploitation",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        976,
+        128
+      ],
+      "id": "29d5ff7f-4a3a-4de1-b1ab-9a0ef1c32b8a",
+      "name": "Ajout exploitation"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ff30e641-54d2-461b-b76f-8925c6ffd558",
+              "name": "subject",
+              "value": "={{ $json.subject }}",
+              "type": "string"
+            },
+            {
+              "id": "13166398-5e06-4a68-8599-f6188038e5f7",
+              "name": "from",
+              "value": "={{ $json.from }}",
+              "type": "object"
+            },
+            {
+              "id": "01a2d440-0d2e-40ad-886c-dc70a90e32c6",
+              "name": "body",
+              "value": "={{ $json.body }}",
+              "type": "string"
+            },
+            {
+              "id": "1157dd58-bb98-4e16-a3b8-ee9256d23517",
+              "name": "date",
+              "value": "={{ $json.date }}",
+              "type": "string"
+            },
+            {
+              "id": "c80449b2-c536-472f-8b09-8bf8e028690d",
+              "name": "Classification",
+              "value": "autre",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        976,
+        272
+      ],
+      "id": "10f45bf5-ed2a-4c61-bc85-bdfe23930bc2",
+      "name": "Ajout autre"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "claude-sonnet-4-5-20250929",
+          "mode": "list",
+          "cachedResultName": "Claude Sonnet 4.5"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        1264,
+        304
+      ],
+      "id": "7ab718ef-0652-4aef-9688-9edaa330a42e",
+      "name": "Anthropic Chat Model2",
+      "credentials": {
+        "anthropicApi": {
+          "id": "Gz2YggoGSOHJjLeG",
+          "name": "Anthropic account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=sujet: {{ $json.subject }}\ncorps: {{ $json.body }}\nde : {\n  nom : {{ $json.from.name }},\n  adresse : {{ $json.from.address }}\n}\ndate : {{ $json.date }}\nclassification : {{ $json.Classification }}\n\nPremière étape :\nAnalysez cet email et créez un résumé concis.\nExigences :\n- Soyez factuel et objectif\n- Mentionnez tous les éléments clés du problème\n- Restez bref (1 à 2 phrases maximum)\n- Concentrez-vous sur le problème principal\n\nDeuxième étape :\nIMPORTANT : Vous DEVEZ suivre cette procédure en 2 actions :\n\n1. D'ABORD, utilisez l'outil \"List rows in Data table\" pour chercher une réclamation existante avec :\n   - Même email/address\n   - Même classification\n   - Résumé similaire (même problème)\n\n2. ENSUITE :\n   - Si UNE réclamation existe déjà : utilisez \"Update row in Data table\" pour incrémenter le champ \"relance\" de +1\n   - Si AUCUNE réclamation n'existe : utilisez \"Insert row in Data table\" pour créer une nouvelle réclamation avec relance = 1\n\nNe faites PAS d'upsert direct. Faites toujours List → puis Update OU Insert.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        1376,
+        0
+      ],
+      "id": "f0b9fa37-5856-4ef3-9126-708ccf8d2990",
+      "name": "Resume and Update DB"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "DCR0VIi51hUlae1K",
+          "mode": "list",
+          "cachedResultName": "reclamations",
+          "cachedResultUrl": "/projects/tVCtibOOmZNvCPt3/datatables/DCR0VIi51hUlae1K"
+        },
+        "matchType": "=allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "email",
+              "keyValue": "={{ $json.from.address }}"
+            },
+            {
+              "keyName": "classification",
+              "keyValue": "={{ $json.Classification }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTableTool",
+      "typeVersion": 1,
+      "position": [
+        1392,
+        304
+      ],
+      "id": "1f23628a-3e93-4e34-9da0-010f06de2d96",
+      "name": "Get row(s) in Data table"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "value": "DCR0VIi51hUlae1K",
+          "mode": "list",
+          "cachedResultName": "reclamations",
+          "cachedResultUrl": "/projects/tVCtibOOmZNvCPt3/datatables/DCR0VIi51hUlae1K"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyValue": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('conditions0_Value', `Id of the row matched`, 'string') }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "relance": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('relance', ``, 'number') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "classification",
+              "displayName": "classification",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "resume",
+              "displayName": "resume",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "relance",
+              "displayName": "relance",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTableTool",
+      "typeVersion": 1,
+      "position": [
+        1520,
+        304
+      ],
+      "id": "65ac710a-75eb-4692-8a09-f996fa5debc3",
+      "name": "Update row(s) in Data table"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "DCR0VIi51hUlae1K",
+          "mode": "list",
+          "cachedResultName": "reclamations",
+          "cachedResultUrl": "/projects/tVCtibOOmZNvCPt3/datatables/DCR0VIi51hUlae1K"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "classification": "={{ $json.Classification }}",
+            "email": "={{ $json.from.address }}",
+            "resume": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('resume', ``, 'string') }}",
+            "relance": 0
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "classification",
+              "displayName": "classification",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "resume",
+              "displayName": "resume",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "relance",
+              "displayName": "relance",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTableTool",
+      "typeVersion": 1,
+      "position": [
+        1648,
+        304
+      ],
+      "id": "d9d3766c-a4c5-4e6f-9c13-d1ced04cd4d4",
+      "name": "Insert row in Data table"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"subject\": \"Demande de remboursement suite à impossibilité d'utilisation\",\n  \"from\": {\n    \"name\": \"Marie Lebrun\",\n    \"address\": \"marie.lebrun@gmail.com\"\n  },\n  \"body\": \"Bonjour,\\n\\nJe souhaite demander le remboursement de mon abonnement mensuel du mois de novembre.\\n\\nJ'ai payé 75€ pour un pass que je n'ai pas pu utiliser pendant 15 jours en raison de problèmes techniques récurrents sur plusieurs lignes.\\n\\nJe trouve cela inacceptable de payer plein tarif pour un service non rendu.\\n\\nJe joins une copie de ma facture et souhaite être remboursée au prorata des jours non utilisés.\\n\\nCordialement,\\nMarie Lebrun\",\n  \"date\": \"2025-11-21T09:15:00.000Z\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        240,
+        -160
+      ],
+      "id": "83fc393c-5aaf-4314-a820-21cd7328e24f",
+      "name": "Réclamation commerciale"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"subject\": \"Retards répétés et manque d'information\",\n  \"from\": {\n    \"name\": \"Pierre Martin\",\n    \"address\": \"pierre.martin@outlook.com\"\n  },\n  \"body\": \"Bonjour,\\n\\nJe prends la ligne 3 tous les jours pour me rendre au travail et depuis 3 semaines, j'ai au moins 2 retards de plus de 20 minutes par semaine.\\n\\nCe matin encore, le métro est resté bloqué 25 minutes entre Saxe-Gambetta et Part-Dieu sans aucune annonce claire sur la durée de l'attente.\\n\\nCes dysfonctionnements récurrents impactent ma vie professionnelle. Je suis arrivé en retard à 4 réunions importantes ce mois-ci.\\n\\nPouvez-vous m'expliquer ce qui se passe et quand la situation va s'améliorer ?\\n\\nCordialement,\\nPierre Martin\",\n  \"date\": \"2025-11-22T08:45:00.000Z\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        240,
+        208
+      ],
+      "id": "c46b047d-505a-4f89-a35e-478159c16265",
+      "name": "Réclamation opérationnelle"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"subject\": \"Suite à ma réclamation - Situation toujours pas résolue\",\n  \"from\": {\n    \"name\": \"Pierre Martin\",\n    \"address\": \"pierre.martin@outlook.com\"\n  },\n  \"body\": \"Bonjour,\\n\\nJe vous ai contacté il y a une semaine concernant les perturbations constantes sur la ligne 3, mais je n'ai toujours reçu aucune réponse.\\n\\nEntre-temps, la situation ne s'est absolument pas améliorée. Encore ce matin, 30 minutes d'attente à quai sans aucune information.\\n\\nC'est la 5ème fois ce mois que j'arrive en retard au travail à cause de vos dysfonctionnements.\\n\\nJ'attends au minimum un retour sur ma précédente demande et une explication sur ces problèmes récurrents.\\n\\nMerci de traiter cette réclamation en urgence.\\n\\nCordialement,\\nPierre Martin\",\n  \"date\": \"2025-11-28T07:30:00.000Z\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        240,
+        368
+      ],
+      "id": "ab5274f8-a3de-48e9-8189-d0645c4e9802",
+      "name": "Réclamation opérationnelle relance"
+    },
+    {
+      "parameters": {
+        "inputText": "=Subject : {{ $json.subject }}\n\nBody : {{ $json.body }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "Commercial",
+              "description": "Emails concernant les réclamations commerciales : problèmes d'abonnement, de facturation, de remboursement, tarifs contestés, difficultés de paiement, litiges sur les titres de transport, demandes de geste commercial, problèmes de compte client ou d'inscription"
+            },
+            {
+              "category": "Billetique",
+              "description": "Emails liés au chargement et au fonctionnement des titres de transport : problèmes de validation de carte, rechargement de pass qui ne fonctionne pas, carte non reconnue aux bornes, titre non activé après achat, dysfonctionnement des valideurs, carte bloquée ou désactivée, problèmes techniques sur l'application mobile pour charger un titre"
+            },
+            {
+              "category": "Exploitation",
+              "description": "Emails concernant le service opérationnel des transports : chauffeur qui n'a pas marqué l'arrêt, bus qui est passé sans s'arrêter, comportement inapproprié d'un conducteur, retards importants non justifiés, bus bondé refusant des passagers, non-respect des horaires, itinéraire non respecté, conduite dangereuse, bus en panne ou hors service"
+            }
+          ]
+        },
+        "options": {
+          "fallback": "other"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1.1,
+      "position": [
+        528,
+        -16
+      ],
+      "id": "803a106d-b133-474d-827b-b376934f721e",
+      "name": "Service Classifier",
+      "alwaysOutputData": false,
+      "notesInFlow": false
+    }
+  ],
+  "connections": {
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Service Classifier",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Réclamation opérationnelle relance",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Réclamation billetique": {
+      "main": [
+        []
+      ]
+    },
+    "Ajout exploitation": {
+      "main": [
+        [
+          {
+            "node": "Resume and Update DB",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ajout billetique": {
+      "main": [
+        [
+          {
+            "node": "Resume and Update DB",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ajout commercial": {
+      "main": [
+        [
+          {
+            "node": "Resume and Update DB",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ajout autre": {
+      "main": [
+        [
+          {
+            "node": "Resume and Update DB",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Resume and Update DB",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Resume and Update DB": {
+      "main": [
+        []
+      ]
+    },
+    "Get row(s) in Data table": {
+      "ai_tool": [
+        [
+          {
+            "node": "Resume and Update DB",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row(s) in Data table": {
+      "ai_tool": [
+        [
+          {
+            "node": "Resume and Update DB",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert row in Data table": {
+      "ai_tool": [
+        [
+          {
+            "node": "Resume and Update DB",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Réclamation commerciale": {
+      "main": [
+        []
+      ]
+    },
+    "Réclamation opérationnelle": {
+      "main": [
+        []
+      ]
+    },
+    "Réclamation opérationnelle relance": {
+      "main": [
+        [
+          {
+            "node": "Service Classifier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Service Classifier": {
+      "main": [
+        [
+          {
+            "node": "Ajout commercial",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Ajout billetique",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Ajout exploitation",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Ajout autre",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
