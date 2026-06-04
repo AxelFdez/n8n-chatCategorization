@@ -7,24 +7,8 @@ services:
     restart: unless-stopped
     ports:
       - "5678:5678"
-    environment:
-      - N8N_BASIC_AUTH_ACTIVE=true
-      - N8N_BASIC_AUTH_USER=admin
-      - N8N_BASIC_AUTH_PASSWORD=admin
-      - N8N_HOST=congenial-computing-machine-g99j5pj7qvcv7px-5678.app.github.dev
-      - N8N_PROTOCOL=https
-      - N8N_EDITOR_BASE_URL=https://congenial-computing-machine-g99j5pj7qvcv7px-5678.app.github.dev/
-      - WEBHOOK_URL=https://congenial-computing-machine-g99j5pj7qvcv7px-5678.app.github.dev/
-      - N8N_PROXY_HOPS=1
-      - N8N_SECURE_COOKIE=false
-      - N8N_PUSH_BACKEND=sse
-      - GENERIC_TIMEZONE=Europe/Paris
-      # Twilio WhatsApp — à remplir avec tes credentials
-      - TWILIO_ACCOUNT_SID=
-      - TWILIO_AUTH_TOKEN=
-      - TWILIO_WHATSAPP_FROM=whatsapp:+
-      # Token secret pour l'endpoint /broadcast
-      - BROADCAST_ADMIN_TOKEN=change-me-secret-token
+    env_file:
+      - .env
     volumes:
       - ./n8n_data:/home/node/.n8n
     networks:
