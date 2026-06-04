@@ -1,0 +1,94 @@
+{
+  "id": "waBroadcast012345",
+  "name": "whatsapp-broadcast",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Diffuser une alerte Lignes d'Azur",
+        "formDescription": "Le message sera envoyé à tous les abonnés actifs via WhatsApp.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Message",
+              "fieldType": "textarea",
+              "requiredField": true,
+              "placeholder": "Ex : ⚠️ Ligne 9 perturbée jusqu'à 18h suite à un incident."
+            }
+          ]
+        },
+        "responseMode": "onReceived",
+        "options": {
+          "respondWithOptions": {
+            "values": {
+              "responseText": "✅ Diffusion en cours vers tous les abonnés actifs."
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [-400, 0],
+      "id": "broadcast-form-001",
+      "name": "Formulaire de diffusion"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "PLACEHOLDER_TABLE_ID",
+          "mode": "id"
+        },
+        "matchType": "=allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "active",
+              "keyValue": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [-180, 0],
+      "id": "broadcast-get-subscribers",
+      "name": "Récupérer abonnés actifs"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "from": "whatsapp:+14155238886",
+        "to": "={{ $json.phone_number }}",
+        "message": "={{ $('Formulaire de diffusion').first().json.Message }}"
+      },
+      "type": "n8n-nodes-base.twilio",
+      "typeVersion": 1,
+      "position": [60, 0],
+      "id": "broadcast-twilio-send",
+      "name": "Envoyer à l'abonné",
+      "credentials": {
+        "twilioApi": {
+          "id": "TWILIO_CRED_ID",
+          "name": "Twilio account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Formulaire de diffusion": {
+      "main": [
+        [{ "node": "Récupérer abonnés actifs", "type": "main", "index": 0 }]
+      ]
+    },
+    "Récupérer abonnés actifs": {
+      "main": [
+        [{ "node": "Envoyer à l'abonné", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

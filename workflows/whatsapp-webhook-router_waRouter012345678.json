@@ -1,0 +1,370 @@
+{
+  "id": "waRouter012345678",
+  "name": "whatsapp-webhook-router",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "whatsapp-router",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-600, 0],
+      "id": "router-webhook-001",
+      "name": "Webhook Twilio"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "OK",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [-380, 0],
+      "id": "router-respond-001",
+      "name": "Respond 200"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.body.Body.toLowerCase().trim() }}",
+              "rightValue": "desabonner",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [-160, 0],
+      "id": "router-if-desabonner",
+      "name": "Est-ce DESABONNER ?"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $('Webhook Twilio').first().json.body.Body.toLowerCase().trim() }}",
+              "rightValue": "abonner",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [-160, 200],
+      "id": "router-if-abonner",
+      "name": "Est-ce ABONNER ?"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "value": "PLACEHOLDER_TABLE_ID",
+          "mode": "id"
+        },
+        "matchType": "=allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "phone_number",
+              "keyValue": "={{ $('Webhook Twilio').first().json.body.From }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "active": false
+          },
+          "matchingColumns": [],
+          "schema": [
+            { "id": "active", "displayName": "active", "required": false, "defaultMatch": false, "display": true, "type": "boolean", "readOnly": false, "removed": false }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [60, -100],
+      "id": "unsub-update",
+      "name": "Marquer désabonné",
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "from": "whatsapp:+14155238886",
+        "to": "={{ $('Webhook Twilio').first().json.body.From }}",
+        "message": "Vous êtes maintenant désabonné(e) des alertes Lignes d'Azur. Vous ne recevrez plus de notifications.\n\nPour vous réabonner : ABONNER"
+      },
+      "type": "n8n-nodes-base.twilio",
+      "typeVersion": 1,
+      "position": [280, -100],
+      "id": "unsub-twilio",
+      "name": "Confirmer désabonnement",
+      "credentials": {
+        "twilioApi": {
+          "id": "TWILIO_CRED_ID",
+          "name": "Twilio account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "value": "PLACEHOLDER_TABLE_ID",
+          "mode": "id"
+        },
+        "matchType": "=allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "phone_number",
+              "keyValue": "={{ $('Webhook Twilio').first().json.body.From }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "active": false
+          },
+          "matchingColumns": [],
+          "schema": [
+            { "id": "active", "displayName": "active", "required": false, "defaultMatch": false, "display": true, "type": "boolean", "readOnly": false, "removed": false }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [60, 100],
+      "id": "sub-deactivate-existing",
+      "name": "Désactiver ligne existante",
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "PLACEHOLDER_TABLE_ID",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "phone_number": "={{ $('Webhook Twilio').first().json.body.From }}",
+            "subscribed_at": "={{ $now.toISO() }}",
+            "name": "={{ $('Webhook Twilio').first().json.body.ProfileName ?? '' }}",
+            "active": true
+          },
+          "matchingColumns": [],
+          "schema": [
+            { "id": "phone_number", "displayName": "phone_number", "required": false, "defaultMatch": false, "display": true, "type": "string", "readOnly": false, "removed": false },
+            { "id": "subscribed_at", "displayName": "subscribed_at", "required": false, "defaultMatch": false, "display": true, "type": "string", "readOnly": false, "removed": false },
+            { "id": "name", "displayName": "name", "required": false, "defaultMatch": false, "display": true, "type": "string", "readOnly": false, "removed": false },
+            { "id": "active", "displayName": "active", "required": false, "defaultMatch": false, "display": true, "type": "boolean", "readOnly": false, "removed": false }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [280, 100],
+      "id": "sub-insert",
+      "name": "Insérer nouvel abonné"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "from": "whatsapp:+14155238886",
+        "to": "={{ $('Webhook Twilio').first().json.body.From }}",
+        "message": "Bienvenue ! Vous êtes abonné(e) aux alertes Lignes d'Azur. 🚌\n\nVous recevrez les informations de perturbation directement ici. Pour poser une question sur le réseau, écrivez simplement votre message.\n\nPour vous désabonner : DESABONNER"
+      },
+      "type": "n8n-nodes-base.twilio",
+      "typeVersion": 1,
+      "position": [500, 100],
+      "id": "sub-twilio-welcome",
+      "name": "Envoyer bienvenue",
+      "credentials": {
+        "twilioApi": {
+          "id": "TWILIO_CRED_ID",
+          "name": "Twilio account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "PLACEHOLDER_TABLE_ID",
+          "mode": "id"
+        },
+        "matchType": "=allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "phone_number",
+              "keyValue": "={{ $('Webhook Twilio').first().json.body.From }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [60, 300],
+      "id": "qa-get-subscriber",
+      "name": "Chercher abonné",
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.active }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [280, 300],
+      "id": "qa-if-subscribed",
+      "name": "Est abonné actif ?"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "waQaAgent01234567",
+          "mode": "id"
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "workflowValues": {
+          "values": [
+            {
+              "name": "from",
+              "stringValue": "={{ $('Webhook Twilio').first().json.body.From }}"
+            },
+            {
+              "name": "question",
+              "stringValue": "={{ $('Webhook Twilio').first().json.body.Body }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 2,
+      "position": [500, 220],
+      "id": "qa-execute-workflow",
+      "name": "Appeler Q&A Agent"
+    }
+  ],
+  "connections": {
+    "Webhook Twilio": {
+      "main": [
+        [{ "node": "Respond 200", "type": "main", "index": 0 }]
+      ]
+    },
+    "Respond 200": {
+      "main": [
+        [{ "node": "Est-ce DESABONNER ?", "type": "main", "index": 0 }]
+      ]
+    },
+    "Est-ce DESABONNER ?": {
+      "main": [
+        [{ "node": "Marquer désabonné", "type": "main", "index": 0 }],
+        [{ "node": "Est-ce ABONNER ?", "type": "main", "index": 0 }]
+      ]
+    },
+    "Marquer désabonné": {
+      "main": [
+        [{ "node": "Confirmer désabonnement", "type": "main", "index": 0 }]
+      ]
+    },
+    "Est-ce ABONNER ?": {
+      "main": [
+        [{ "node": "Désactiver ligne existante", "type": "main", "index": 0 }],
+        [{ "node": "Chercher abonné", "type": "main", "index": 0 }]
+      ]
+    },
+    "Désactiver ligne existante": {
+      "main": [
+        [{ "node": "Insérer nouvel abonné", "type": "main", "index": 0 }]
+      ]
+    },
+    "Insérer nouvel abonné": {
+      "main": [
+        [{ "node": "Envoyer bienvenue", "type": "main", "index": 0 }]
+      ]
+    },
+    "Chercher abonné": {
+      "main": [
+        [{ "node": "Est abonné actif ?", "type": "main", "index": 0 }]
+      ]
+    },
+    "Est abonné actif ?": {
+      "main": [
+        [{ "node": "Appeler Q&A Agent", "type": "main", "index": 0 }],
+        []
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
