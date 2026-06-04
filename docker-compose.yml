@@ -1,8 +1,18 @@
 version: '3.8'
 
 services:
+  n8n-init:
+    image: busybox
+    command: chown -R 1000:1000 /home/node/.n8n
+    volumes:
+      - n8n_data:/home/node/.n8n
+    user: root
+  
   n8n:
     image: n8nio/n8n
+    depends_on:
+      n8n-init:
+        condition: service_completed_successfully
     container_name: n8n
     restart: unless-stopped
     ports:
